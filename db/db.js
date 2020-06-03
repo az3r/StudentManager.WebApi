@@ -20,5 +20,6 @@ exports.load = function(sql) {
                 }
             });
         })
+        .catch()
     })
 };
