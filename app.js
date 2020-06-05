@@ -3,24 +3,17 @@ const express = require('express');
 // const cookieParser = require('cookie-parser');
 // const bodyParser = require('body-parser');
 // const logger = require('morgan');
-const student = require('./controllers/student');
 const app = express();
 
 // app.use(logger('dev'));
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cookieParser());
 
-app.get('/', (req, res) =>{
-  student.getStudent(req, res);
-})
-app.get('/add', (req, res) =>{
-  student.addStudent(req, res);
-})
+app.use("/api",require("./routes"));
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
 next(createError(404));
 });
-
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
