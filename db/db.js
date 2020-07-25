@@ -6,7 +6,7 @@ exports.load = function(sql) {
             user: "sa",
             password: "",
             server: "localhost\\SQLEXPRESS",
-            database: "QLSV",
+            database: "StudentManager.Database",
             port: 1433
         });
         conn.connect()

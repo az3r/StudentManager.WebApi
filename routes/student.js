@@ -1,24 +1,31 @@
 const express = require('express');
 const router = express.Router();
 const studentRepo = require('../models/studentRepo');
-
+//GET
 router.get('/', (req, res) =>{
   	studentRepo.loadAll().then(rows => {
 		//console.log(rows.recordset[0].Ten);
 		return res.status(200).json(rows);
 	})
 })
-router.get('/single', (req, res) =>{
-	studentRepo.singleStudent(1712913).then(rows => {
+router.get('/single/:id', (req, res) =>{
+	studentRepo.singleStudent(req.params.id).then(rows => {
 		//console.log(rows.recordset[0].Ten);
 		return res.status(200).json(rows);
 	})
 })
+router.get('/score/:id', (req, res) =>{
+	studentRepo.singleScore(req.params.id, req.query.sem, req.query.year).then(rows => {
+		//console.log(rows.recordset[0].Ten);
+		return res.status(200).json(rows);
+	})
+})
+//POST
 router.post('/add', (req, res) =>{
   	const student = {
-		MSSV:"00006",
-		Ho: "Le",
-		Ten: "Tuan"
+		StudentId:"1712913",
+		Ho: "Nguyen",
+		Ten: "Vinh"
 	};
 	studentRepo.add(student).then(result => {
 		studentRepo.singleStudent(student.MSSV).then(rows => {
