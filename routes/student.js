@@ -8,14 +8,24 @@ router.get('/', (req, res) =>{
 		return res.status(200).json(rows);
 	})
 })
+router.get('/class/:id', (req, res) =>{
+	studentRepo.loadStudentInClass(req.params.id).then(rows => {
+		return res.status(200).json(rows);
+	})
+})
 router.get('/single/:id', (req, res) =>{
 	studentRepo.singleStudent(req.params.id).then(rows => {
-		//console.log(rows.recordset[0].Ten);
 		return res.status(200).json(rows);
 	})
 })
 router.get('/score/:id', (req, res) =>{
 	studentRepo.singleScore(req.params.id, req.query.sem, req.query.year).then(rows => {
+		//console.log(rows.recordset[0].Ten);
+		return res.status(200).json(rows);
+	})
+})
+router.get('/schedule/:id', (req, res) =>{
+	studentRepo.singleTimeTable(req.params.id).then(rows => {
 		//console.log(rows.recordset[0].Ten);
 		return res.status(200).json(rows);
 	})
