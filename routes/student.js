@@ -30,15 +30,23 @@ router.get('/schedule/:id', (req, res) =>{
 		return res.status(200).json(rows);
 	})
 })
+router.get('/noti/:id', (req, res) =>{
+	studentRepo.singleNoti(req.params.id).then(rows => {
+		//console.log(rows.recordset[0].Ten);
+		return res.status(200).json(rows);
+	})
+})
+
 //POST
 router.post('/add', (req, res) =>{
-  	const student = {
-		StudentId:"1712913",
-		Ho: "Nguyen",
-		Ten: "Vinh"
-	};
+ //  	const student = {
+	// 	StudentId:"1712913",
+	// 	FirstName: "Nguyen",
+	// 	LastName: "Vinh"
+	// };
+	const student = req.body;
 	studentRepo.add(student).then(result => {
-		studentRepo.singleStudent(student.MSSV).then(rows => {
+		studentRepo.singleStudent(student.StudentId).then(rows => {
 			// console.log(rows.recordset[0].Ten)
 			return res.status(200).json(rows);
 	    })
