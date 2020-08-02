@@ -4,8 +4,8 @@ exports.load = function(sql) {
     return new Promise((resolve, reject) => {
         var conn = new sqlDb.ConnectionPool({
             user: "sa",
-            password: "",
-            server: "localhost\\SQLEXPRESS",
+            password: "ManhTuan1999",
+            server: "localhost",
             database: "StudentManager.Database",
             port: 1433
         });
