@@ -21,23 +21,25 @@ router.get('/single/:id', (req, res) =>{
 router.get('/score/:id', (req, res) =>{
 	studentRepo.singleScore(req.params.id, req.query.sem, req.query.year).then(rows => {
 		let i = 0, records = []
-		for (i; i<rows.recordset.length; i++){
-			let record = {
-				StudentId: rows.recordset[i].StudentId,
-				SubjectName: rows.recordset[i].SubjectName,
-				StudentId: rows.recordset[i].StudentId,
-				Test15: [rows.recordset[i].Test15No1, rows.recordset[i].Test15No2, rows.recordset[i].Test15No3],
-				Test45: [rows.recordset[i].Test45No1, rows.recordset[i].Test45No2],
-				TestFinal: rows.recordset[i].TestFinal,
-				Final: rows.recordset[i].Final
+		if(rows.recordset != null){
+			for (i; i<rows.recordset.length; i++){
+				let record = {
+					StudentId: rows.recordset[i].StudentId,
+					SubjectName: rows.recordset[i].SubjectName,
+					StudentId: rows.recordset[i].StudentId,
+					Test15: [rows.recordset[i].Test15No1, rows.recordset[i].Test15No2, rows.recordset[i].Test15No3],
+					Test45: [rows.recordset[i].Test45No1, rows.recordset[i].Test45No2],
+					TestFinal: rows.recordset[i].TestFinal,
+					Final: rows.recordset[i].Final
+				}
+				records[i] = record;
 			}
-			records[i] = record;
 		}
 		return res.status(200).json(records);
 	})
 })
 router.get('/schedule/:id', (req, res) =>{
-	studentRepo.singleTimeTable(req.params.id).then(rows => {
+	studentRepo.singleTimeTable(req.params.id, req.query.sem, req.query.year).then(rows => {
 		//console.log(rows.recordset[0].Ten);
 		return res.status(200).json(rows.recordset);
 	})
