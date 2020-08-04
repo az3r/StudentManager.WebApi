@@ -3,10 +3,11 @@ const router = express.Router();
 const studentRepo = require('../models/studentRepo');
 //GET
 router.get('/', (req, res) =>{
-  	studentRepo.loadAll().then(rows => {
-		//console.log(rows.recordset[0].Ten);
-		return res.status(200).json(rows.recordset);
-	})
+ //  	studentRepo.loadAll().then(rows => {
+	// 	//console.log(rows.recordset[0].Ten);
+	// 	return res.status(200).json(rows.recordset);
+	// })
+	return res.sendStatus(200);
 })
 router.get('/class/:id', (req, res) =>{
 	studentRepo.loadStudentInClass(req.params.id).then(rows => {
@@ -15,7 +16,7 @@ router.get('/class/:id', (req, res) =>{
 })
 router.get('/single/:id', (req, res) =>{
 	studentRepo.singleStudent(req.params.id).then(rows => {
-		return res.status(200).json(rows.recordset);
+		return res.status(200).json(rows.recordset[0]);
 	})
 })
 router.get('/score/:id', (req, res) =>{
