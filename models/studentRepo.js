@@ -17,8 +17,18 @@ exports.loadStudentInClass = (MaLop) => {
 	return db.load(sql);
 }
 exports.loadTableOfScore = (StudentId) => {
-		sql = `select StudentId, Subject.SubjectName, Test15No1, Test15No2, Test15No3, Test45No1, Test45No2, TestFinal, (Test15No1+Test15No2+Test15No3+2*(Test45No1+Test45No2)+3*TestFinal)/10 as Final from (SELECT StudentId, SubjectId, [1] as Test15No1, [2] as Test15No2, [3] as Test15No3, [4] as Test45No1, [5] as Test45No2, [6] as TestFinal FROM (SELECT StudentId, SubjectId, ScoreType, ScoreValue FROM Score where StudentId = ${StudentId} and Semester = ${Semester} and AcademicYear = ${AcademicYear}) AS SourceTable PIVOT (Min(ScoreValue) FOR ScoreType IN ([1], [2], [3], [4], [5], [6])) AS PivotTable) as hehe join Subject on hehe.SubjectId = Subject.SubjectId;`;
-		return db.load(sql);
+	sql = `select StudentId, Subject.SubjectName, Test15No1, Test15No2, Test15No3, Test45No1, Test45No2, TestFinal, (Test15No1+Test15No2+Test15No3+2*(Test45No1+Test45No2)+3*TestFinal)/10 as Final from (SELECT StudentId, SubjectId, [1] as Test15No1, [2] as Test15No2, [3] as Test15No3, [4] as Test45No1, [5] as Test45No2, [6] as TestFinal FROM (SELECT StudentId, SubjectId, ScoreType, ScoreValue FROM Score where StudentId = ${StudentId} and Semester = ${Semester} and AcademicYear = ${AcademicYear}) AS SourceTable PIVOT (Min(ScoreValue) FOR ScoreType IN ([1], [2], [3], [4], [5], [6])) AS PivotTable) as hehe join Subject on hehe.SubjectId = Subject.SubjectId;`;
+	return db.load(sql);
+}
+exports.singleFb = (StudentId, Semester, AcademicYear) => {
+	let sql=null
+	if(Semester == null && AcademicYear == null)
+		sql = `select StudentId, Feedback, Conduct, Semester, AcademicYear from Feedback where Feedback.StudentId = '${StudentId}'`;
+	if(Semester == null && AcademicYear != null)
+		sql = `select StudentId, Feedback, Conduct, Semester, AcademicYear from Feedback where Feedback.StudentId = '${StudentId}' and Feedback.AcademicYear = ${AcademicYear}`;
+	if(Semester != null && AcademicYear != null)
+		sql = `select StudentId, Feedback, Conduct, Semester, AcademicYear from Feedback where Feedback.StudentId = '${StudentId}' and Feedback.AcademicYear = ${AcademicYear} and Feedback.Semester = ${Semester}`;
+	return db.load(sql);
 }
 
 exports.singleScore = (StudentId, Semester, AcademicYear) => {

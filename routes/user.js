@@ -26,13 +26,15 @@ router.post('/login', (req, res) =>{
 		if(!rows.recordset)
 		{
 			return res.status(403).json({
-				message: "Sai mật khẩu hoặc mã người dùng"
+				success: 0,
+				message: "Wrong password or user id!"
 			});
 		}
 		if(!bcrypt.compareSync(body.Password, rows.recordset[0].Password))
 		{
 			return res.status(403).json({
-				message: "Sai mật khẩu hoặc mã người dùng"
+				success: 0,
+				message: "Wrong password or user id!"
 			});
 		}
 		jwt.sign({ PersonalInfoId: rows.recordset[0].PersonalInfoId }, 'shhhh', { expiresIn: '200s' },(err, token) => {

@@ -24,7 +24,12 @@ router.get('/single/:id', jwtt.tokenVerify,(req, res) =>{
 router.get('/score/:id', jwtt.tokenVerify,(req, res) =>{
 	studentRepo.singleScore(req.params.id, req.query.sem, req.query.year).then(rows => {
 		let i = 0, records = []
-		if(rows.recordset != null){
+		if(typeof rows.recordset === 'undefined' || !rows.recordset.length){
+			return res.status(403).json({
+				success: 0,
+				message: "Unavailable score!"
+			});
+		}else{
 			for (i; i<rows.recordset.length; i++){
 				let record = {
 					StudentId: rows.recordset[i].StudentId,
@@ -37,19 +42,35 @@ router.get('/score/:id', jwtt.tokenVerify,(req, res) =>{
 				}
 				records[i] = record;
 			}
+			return res.status(200).json(records);
 		}
-		return res.status(200).json(records);
 	})
 })
 router.get('/schedule/:id', jwtt.tokenVerify,(req, res) =>{
 	studentRepo.singleTimeTable(req.params.id, req.query.sem, req.query.year).then(rows => {
-		//console.log(rows.recordset[0].Ten);
+		if(typeof rows.recordset === 'undefined' || !rows.recordset.length){
+			return res.status(403).json({
+				success: 0,
+				message: "Unavailable schedule!"
+			});
+		}
 		return res.status(200).json(rows.recordset);
 	})
 })
 router.get('/noti/:id', jwtt.tokenVerify,(req, res) =>{
 	studentRepo.singleNoti(req.params.id).then(rows => {
 		//console.log(rows.recordset[0].Ten);
+		return res.status(200).json(rows.recordset);
+	})
+})
+router.get('/feedback/:id', jwtt.tokenVerify,(req, res) =>{
+	studentRepo.singleFb(req.params.id, req.query.sem, req.query.year).then(rows => {
+		if(typeof rows.recordset === 'undefined' || !rows.recordset.length){
+			return res.status(403).json({
+				success: 0,
+				message: "Unavailable feedback!"
+			});
+		}
 		return res.status(200).json(rows.recordset);
 	})
 })
