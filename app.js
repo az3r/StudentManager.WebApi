@@ -1,13 +1,15 @@
 const createError = require('http-errors');
 const express = require('express');
 const jwt = require('jsonwebtoken');
+
 // const cookieParser = require('cookie-parser');
-// const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 // const logger = require('morgan');
 const app = express();
 
 // app.use(logger('dev'));
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(cookieParser());
 
 app.use("/api",require("./routes"));

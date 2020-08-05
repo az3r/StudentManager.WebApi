@@ -6,6 +6,6 @@ exports.loadAll = () => {
 }
 
 exports.singleId = (id) => {
-	const sql=`select * from Account where id = ${id}`;
+	const sql=`select * from Account where PersonalInfoId = '${id}'`;
 	return db.load(sql);
 }

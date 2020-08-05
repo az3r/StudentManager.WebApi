@@ -1,25 +1,27 @@
 const express = require('express');
 const router = express.Router();
 const studentRepo = require('../models/studentRepo');
+const jwtt = require('../auth/jsonwebtoken');
+
 //GET
-router.get('/', (req, res) =>{
+router.get('/', jwtt.tokenVerify,(req, res) =>{
  //  	studentRepo.loadAll().then(rows => {
 	// 	//console.log(rows.recordset[0].Ten);
 	// 	return res.status(200).json(rows.recordset);
 	// })
 	return res.sendStatus(200);
 })
-router.get('/class/:id', (req, res) =>{
+router.get('/class/:id', jwtt.tokenVerify,(req, res) =>{
 	studentRepo.loadStudentInClass(req.params.id).then(rows => {
 		return res.status(200).json(rows.recordset);
 	})
 })
-router.get('/single/:id', (req, res) =>{
+router.get('/single/:id', jwtt.tokenVerify,(req, res) =>{
 	studentRepo.singleStudent(req.params.id).then(rows => {
 		return res.status(200).json(rows.recordset[0]);
 	})
 })
-router.get('/score/:id', (req, res) =>{
+router.get('/score/:id', jwtt.tokenVerify,(req, res) =>{
 	studentRepo.singleScore(req.params.id, req.query.sem, req.query.year).then(rows => {
 		let i = 0, records = []
 		if(rows.recordset != null){
@@ -39,13 +41,13 @@ router.get('/score/:id', (req, res) =>{
 		return res.status(200).json(records);
 	})
 })
-router.get('/schedule/:id', (req, res) =>{
+router.get('/schedule/:id', jwtt.tokenVerify,(req, res) =>{
 	studentRepo.singleTimeTable(req.params.id, req.query.sem, req.query.year).then(rows => {
 		//console.log(rows.recordset[0].Ten);
 		return res.status(200).json(rows.recordset);
 	})
 })
-router.get('/noti/:id', (req, res) =>{
+router.get('/noti/:id', jwtt.tokenVerify,(req, res) =>{
 	studentRepo.singleNoti(req.params.id).then(rows => {
 		//console.log(rows.recordset[0].Ten);
 		return res.status(200).json(rows.recordset);
