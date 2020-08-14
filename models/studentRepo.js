@@ -5,15 +5,15 @@ exports.loadAll = () => {
 	return db.load(sql);
 }
 exports.singleStudent = (StudentId) => {
-	const sql=`select Student.StudentId, IsGraduated, Address, LastName, MiddleName, FirstName, Email, PhoneNumber, IsMale, Birthday, EnrolledClass.ClassId from Student join PersonalInfo on Student.StudentId = PersonalInfo.PersonalInfoId join EnrolledClass on Student.StudentId = EnrolledClass.StudentId where Student.StudentId=${StudentId};`;
+	const sql=`select Student.StudentId, IsGraduated, Address, LastName, MiddleName, FirstName, Email, PhoneNumber, IsMale, CONVERT(VARCHAR(10), PersonalInfo.Birthday) as Birthday, EnrolledClass.ClassId from Student join PersonalInfo on Student.StudentId = PersonalInfo.PersonalInfoId join EnrolledClass on Student.StudentId = EnrolledClass.StudentId where Student.StudentId=${StudentId};`;
 	return db.load(sql);
 }
 exports.add = student => {
     var sql = `insert into Student(StudentId, FirstName, LastName) values('${student.StudentId}', '${student.FirstName}', '${student.LastName}');`;
     return db.load(sql);
 }
-exports.loadStudentInClass = (MaLop) => {
-	const sql=`select * from EnrolledClass join Student on EnrolledClass.StudentId = Student.StudentId where Student.StudentId = ${MaSoFirstNamecSinh} and class.MaLop = '${MaLop}'`;
+exports.loadStudentInClass = (ClassId) => {
+	const sql=`select EnrolledClass.ClassId, Student.StudentId, PersonalInfo.LastName, PersonalInfo.MiddleName, PersonalInfo.FirstName, PersonalInfo.IsMale, CONVERT(VARCHAR(10), PersonalInfo.Birthday) as Birthday from EnrolledClass join Student on EnrolledClass.StudentId = Student.StudentId join PersonalInfo on Student.StudentId = PersonalInfo.PersonalInfoId where EnrolledClass.ClassId = '${ClassId}';`
 	return db.load(sql);
 }
 exports.loadTableOfScore = (StudentId) => {
@@ -60,4 +60,9 @@ exports.singleTimeTable = (StudentId, Semester, AcademicYear) => {
 exports.singleNoti = (StudentId) => {
 	const sql = `select * from ClassNotification where (select ClassId from Student join EnrolledClass on Student.StudentId = EnrolledClass.StudentId where Student.StudentId = ${StudentId}) = ClassNotification.ClassId;`;
 	return db.load(sql)
+}
+
+exports.addScore = (score) => {
+	const sql = `insert into Score(StudentId, SubjectId, Semester, AcademicYear, ScoreType, ScoreValue) values('${Score.StudentId}', '${Score.SubjectId}', '${Score.Semester}', '${Score.AcademicYear}', '${Score.ScoreType}', '${score.ScoreValue}');`;
+    return db.load(sql);
 }

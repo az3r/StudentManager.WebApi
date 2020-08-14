@@ -8,18 +8,18 @@ const jwtt = require('../auth/jsonwebtoken');
 router.post('/post', jwtt.tokenVerify, (req, res) =>{
 	res.sendStatus(200);
 });
-router.post('/signup', (req, res) =>{
-	let body = req.body;
-	body.Password = bcrypt.hashSync(body.Password, null, null);
-	// userRepo.signUpUser(body).then(rows => {
-	// 	userRepo.singleId(body.PersonalInfoId).then(rows =>{
+// router.post('/signup', (req, res) =>{
+// 	let body = req.body;
+// 	body.Password = bcrypt.hashSync(body.Password, null, null);
+// 	// userRepo.signUpUser(body).then(rows => {
+// 	// 	userRepo.singleId(body.PersonalInfoId).then(rows =>{
 
-	// 	})
-	// });
-	res.json({
-		password: body.Password
-	})
-});
+// 	// 	})
+// 	// });
+// 	res.json({
+// 		password: body.Password
+// 	})
+// });
 router.post('/login', (req, res) =>{
 	let body = req.body;
 	userRepo.singleId(body.PersonalInfoId).then(rows =>{
@@ -39,7 +39,8 @@ router.post('/login', (req, res) =>{
 		}
 		jwt.sign({ PersonalInfoId: rows.recordset[0].PersonalInfoId }, 'shhhh', { expiresIn: '200s' },(err, token) => {
 			return res.status(200).json({
-				token
+				token: token,
+				account: rows.recordset[0]
 			})
 		});
 	})
