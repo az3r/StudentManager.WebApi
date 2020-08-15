@@ -62,7 +62,7 @@ router.get('/listscore/:id', jwtt.tokenVerify,(req, res) =>{
 					LastName: rows.recordset[i].LastName,
 					MiddleName: rows.recordset[i].MiddleName,
 					FirstName: rows.recordset[i].FirstName,
-					Email: rows.recordset[i].email,
+					Email: rows.recordset[i].Email,
 					Birthday: rows.recordset[i].Birthday,
 					Address: rows.recordset[i].Address,
 					IsMale: rows.recordset[i].IsMale,
@@ -128,5 +128,9 @@ router.post('/addfeedback', (req, res) => {
 			return res.status(200).json(rows.recordset);
 	    })
 	})
+});
+router.post('/addmultiscore', (req, res) => {
+	let score = req.body;
+	
 });
 module.exports = router;

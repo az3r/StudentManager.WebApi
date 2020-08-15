@@ -37,3 +37,23 @@ exports.addSingleScore = (score) => {
 	const sql = `insert into Score(StudentId, SubjectId, ScoreType, ScoreValue, Semester, AcademicYear) values('${score.StudentId}', ${score.SubjectId}, ${score.ScoreType}, ${score.ScoreValue}, ${score.Semester}, ${score.AcademicYear});`;
     return db.load(sql);
 }
+exports.addMultiScore = (score) => {
+	let i = 0, sql = ``;
+	for (i; i<score.length; i++)
+	{
+		let j = 0;
+		for (j; j<2; j++)
+		{
+			sql = sql + `insert into Score(StudentId, SubjectId, ScoreType, ScoreValue, Semester, AcademicYear) values('${score[i].StudentId}', ${score[i].SubjectId}, ${score[i].ScoreType}, ${score[i].ScoreValue}, ${score[i].Semester}, ${score[i].AcademicYear});
+			`;
+		}
+		j = 0;
+		for(j; j<3; j++)
+		{
+
+		}
+		sql = sql + `insert into Score(StudentId, SubjectId, ScoreType, ScoreValue, Semester, AcademicYear) values('${score[i].StudentId}', ${score[i].SubjectId}, ${score[i].ScoreType}, ${score[i].ScoreValue}, ${score[i].Semester}, ${score[i].AcademicYear});
+		`;
+	}
+	return db.load(sql);
+}

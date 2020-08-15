@@ -2,7 +2,8 @@ const db = require('../db/db');
 
 exports.listClass = (TeacherId, sem, year) => {
 	const sql= `select distinct Schedule.ClassId, e.SumStudent, CONCAT(PersonalInfo.LastName, ' ', PersonalInfo.MiddleName, ' ' ,PersonalInfo.FirstName) as 'HomeroomTeacherName' from Schedule join (select EnrolledClass.ClassId, EnrolledClass.AcademicYear, count(*) as SumStudent from EnrolledClass join Student on EnrolledClass.StudentId = Student.StudentId group by EnrolledClass.ClassId, EnrolledClass.AcademicYear) as e on Schedule.ClassId = e.ClassId
-	join PersonalInfo on PersonalInfo.PersonalInfoId = Schedule.TeacherId
+	join HomeRoom on HomeRoom.ClassId = Schedule.ClassId
+	join PersonalInfo on PersonalInfo.PersonalInfoId = HomeRoom.TeacherId
 	where Schedule.TeacherId = '${TeacherId}' and Schedule.Semester = ${sem} and Schedule.AcademicYear = ${year}`;
 	return db.load(sql);
 }
