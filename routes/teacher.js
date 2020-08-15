@@ -20,12 +20,7 @@ router.get('/listclass/:id', jwtt.tokenVerify,(req, res) =>{
 				message: "Unavailable class!"
 			});
 		}else{
-			let ClassId = [];
-			let i = 0;
-			for (i; i<rows.recordset.length; i++){
-				ClassId[i] = rows.recordset[i].ClassId;
-			}
-			return res.status(200).json(ClassId);
+			return res.status(200).json(rows.recordset);
 		}
 	})
 });
@@ -88,15 +83,15 @@ router.get('/feedback/:id', jwtt.tokenVerify,(req, res) =>{
 })
 
 //POST
-router.post('/add', (req, res) =>{
+router.post('/addScore', (req, res) =>{
  //  	const student = {
 	// 	StudentId:"1712913",
 	// 	FirstName: "Nguyen",
 	// 	LastName: "Vinh"
 	// };
-	const student = req.body;
-	studentRepo.add(student).then(result => {
-		studentRepo.singleStudent(student.StudentId).then(rows => {
+	const score = req.body;
+	teacherRepo.addScore(score).then(result => {
+		teacherRepo.singleScore(student.StudentId).then(rows => {
 			// console.log(rows.recordset[0].Ten)
 			return res.status(200).json(rows.recordset);
 	    })
@@ -106,7 +101,7 @@ router.post('/add', (req, res) =>{
 router.post('/addScore', (req, res) => {
 	const score = req.body;
 	studentRepo.addScore(score).then(result => {
-		studentRepo.singleScore(score.StudentId, score.Semester, score.AcademicYear).then(rows => {
+		teacherRepo.singleScore(score).then(rows => {
 			return res.status(200).json(rows.recordset);
 	    })
 	}).catch(function(e) {
