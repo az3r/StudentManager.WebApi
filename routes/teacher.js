@@ -131,6 +131,11 @@ router.post('/addfeedback', (req, res) => {
 });
 router.post('/addmultiscore', (req, res) => {
 	let score = req.body;
-	
+	scoreRepo.addMultiScore(score).then(result=>{
+		return res.status(403).json({
+			success: 1,
+			message: "oke!"
+		});
+	})
 });
 module.exports = router;

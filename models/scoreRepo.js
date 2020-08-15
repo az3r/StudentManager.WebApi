@@ -5,7 +5,7 @@ exports.updateScore = (score) => {
     return db.load(sql);
 }
 exports.singleScore = (StudentId, Subject, Semester, AcademicYear) => {
-	let sql = `select StudentId, Subject.SubjectName, Test15No1, Test15No2, Test15No3, Test45No1, Test45No2, TestFinal, (Test15No1+Test15No2+Test15No3+2*(Test45No1+Test45No2)+3*TestFinal)/10 as Final, Semester, AcademicYear from (SELECT StudentId, SubjectId, [1] as Test15No1, [2] as Test15No2, [3] as Test15No3, [4] as Test45No1, [5] as Test45No2, [6] as TestFinal, Semester, AcademicYear FROM (SELECT StudentId, SubjectId, Semester, AcademicYear, ScoreType, ScoreValue FROM Score where StudentId = ${StudentId} `;	
+	let sql = `select StudentId, Subject.SubjectName, Subject.SubjectId, Test15No1, Test15No2, Test15No3, Test45No1, Test45No2, TestFinal, (Test15No1+Test15No2+Test15No3+2*(Test45No1+Test45No2)+3*TestFinal)/10 as Final, Semester, AcademicYear from (SELECT StudentId, SubjectId, [1] as Test15No1, [2] as Test15No2, [3] as Test15No3, [4] as Test45No1, [5] as Test45No2, [6] as TestFinal, Semester, AcademicYear FROM (SELECT StudentId, SubjectId, Semester, AcademicYear, ScoreType, ScoreValue FROM Score where StudentId = ${StudentId} `;	
 	if(Semester != null)
 		sql = sql + ` and Semester = ${Semester}`;
 	if(AcademicYear != null)
@@ -41,18 +41,17 @@ exports.addMultiScore = (score) => {
 	let i = 0, sql = ``;
 	for (i; i<score.length; i++)
 	{
-		let j = 0;
-		for (j; j<2; j++)
-		{
-			sql = sql + `insert into Score(StudentId, SubjectId, ScoreType, ScoreValue, Semester, AcademicYear) values('${score[i].StudentId}', ${score[i].SubjectId}, ${score[i].ScoreType}, ${score[i].ScoreValue}, ${score[i].Semester}, ${score[i].AcademicYear});
-			`;
-		}
-		j = 0;
-		for(j; j<3; j++)
-		{
-
-		}
-		sql = sql + `insert into Score(StudentId, SubjectId, ScoreType, ScoreValue, Semester, AcademicYear) values('${score[i].StudentId}', ${score[i].SubjectId}, ${score[i].ScoreType}, ${score[i].ScoreValue}, ${score[i].Semester}, ${score[i].AcademicYear});
+		sql = sql + `insert into Score(StudentId, SubjectId, ScoreType, ScoreValue, Semester, AcademicYear) values('${score[i].StudentId}', ${score[i].SubjectId}, 1, ${score[i].Test15[0]}, ${score[i].Semester}, ${score[i].AcademicYear});
+		`;
+		sql = sql + `insert into Score(StudentId, SubjectId, ScoreType, ScoreValue, Semester, AcademicYear) values('${score[i].StudentId}', ${score[i].SubjectId}, 2, ${score[i].Test15[1]}, ${score[i].Semester}, ${score[i].AcademicYear});
+		`;
+		sql = sql + `insert into Score(StudentId, SubjectId, ScoreType, ScoreValue, Semester, AcademicYear) values('${score[i].StudentId}', ${score[i].SubjectId}, 3, ${score[i].Test15[2]}, ${score[i].Semester}, ${score[i].AcademicYear});
+		`;
+		sql = sql + `insert into Score(StudentId, SubjectId, ScoreType, ScoreValue, Semester, AcademicYear) values('${score[i].StudentId}', ${score[i].SubjectId}, 4, ${score[i].Test45[0]}, ${score[i].Semester}, ${score[i].AcademicYear});
+		`;
+		sql = sql + `insert into Score(StudentId, SubjectId, ScoreType, ScoreValue, Semester, AcademicYear) values('${score[i].StudentId}', ${score[i].SubjectId}, 5, ${score[i].Test45[1]}, ${score[i].Semester}, ${score[i].AcademicYear});
+		`;
+		sql = sql + `insert into Score(StudentId, SubjectId, ScoreType, ScoreValue, Semester, AcademicYear) values('${score[i].StudentId}', ${score[i].SubjectId}, 6, ${score[i].TestFinal}, ${score[i].Semester}, ${score[i].AcademicYear});
 		`;
 	}
 	return db.load(sql);

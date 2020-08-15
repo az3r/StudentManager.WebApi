@@ -30,6 +30,7 @@ router.get('/score/:id', jwtt.tokenVerify,(req, res) =>{
 			for (i; i<rows.recordset.length; i++){
 				let record = {
 					StudentId: rows.recordset[i].StudentId,
+					SubjectId: rows.recordset[i].SubjectId,
 					SubjectName: rows.recordset[i].SubjectName,
 					StudentId: rows.recordset[i].StudentId,
 					Test15: [rows.recordset[i].Test15No1, rows.recordset[i].Test15No2, rows.recordset[i].Test15No3],
