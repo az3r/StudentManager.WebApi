@@ -1,13 +1,11 @@
 const db = require('../db/db');
 
 exports.singleFb = (StudentId, Semester, AcademicYear) => {
-	let sql=null
-	if(Semester == null && AcademicYear == null)
-		sql = `select StudentId, Feedback, Conduct, Semester, AcademicYear from Feedback where Feedback.StudentId = '${StudentId}'`;
-	if(Semester == null && AcademicYear != null)
-		sql = `select StudentId, Feedback, Conduct, Semester, AcademicYear from Feedback where Feedback.StudentId = '${StudentId}' and Feedback.AcademicYear = ${AcademicYear}`;
-	if(Semester != null && AcademicYear != null)
-		sql = `select StudentId, Feedback, Conduct, Semester, AcademicYear from Feedback where Feedback.StudentId = '${StudentId}' and Feedback.AcademicYear = ${AcademicYear} and Feedback.Semester = ${Semester}`;
+	let sql = `select StudentId, Feedback, Conduct, Semester, AcademicYear from Feedback where Feedback.StudentId = '${StudentId}' `
+	if(Semester != null)
+		sql = sql + `and Feedback.Semester = ${Semester} `;
+	if(AcademicYear != null)	
+		sql = sql + `and Feedback.AcademicYear = ${AcademicYear} `
 	return db.load(sql);
 }
 exports.addfeedback = (feedback) => {
