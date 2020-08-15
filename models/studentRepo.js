@@ -12,8 +12,8 @@ exports.add = student => {
     var sql = `insert into Student(StudentId, FirstName, LastName) values('${student.StudentId}', '${student.FirstName}', '${student.LastName}');`;
     return db.load(sql);
 }
-exports.loadStudentInClass = (ClassId) => {
-	const sql=`select EnrolledClass.ClassId, Student.StudentId, PersonalInfo.LastName, PersonalInfo.MiddleName, PersonalInfo.FirstName, PersonalInfo.IsMale, CONVERT(VARCHAR(10), PersonalInfo.Birthday) as Birthday from EnrolledClass join Student on EnrolledClass.StudentId = Student.StudentId join PersonalInfo on Student.StudentId = PersonalInfo.PersonalInfoId where EnrolledClass.ClassId = '${ClassId}';`
+exports.loadStudentInClass = (ClassId, year) => {
+	const sql=`select EnrolledClass.ClassId, EnrolledClass.AcademicYear, Student.StudentId, PersonalInfo.LastName, PersonalInfo.MiddleName, PersonalInfo.FirstName, PersonalInfo.IsMale, CONVERT(VARCHAR(10), PersonalInfo.Birthday) as Birthday from EnrolledClass join Student on EnrolledClass.StudentId = Student.StudentId join PersonalInfo on Student.StudentId = PersonalInfo.PersonalInfoId where EnrolledClass.ClassId = '${ClassId}' and EnrolledClass.AcademicYear = ${year};`
 	return db.load(sql);
 }
 exports.singleFb = (StudentId, Semester, AcademicYear) => {

@@ -20,7 +20,10 @@ exports.singleScore = (StudentId, Semester, AcademicYear) => {
 
 	return db.load(sql)
 }
-
+exports.getScore = (score) => {
+	const sql = `select * from Score where StudentId = '${score.StudentId}' and Semester = ${score.Semester} and AcademicYear = ${score.AcademicYear} and SubjectId = ${score.SubjectId} and ScoreType = ${score.ScoreType};`;
+    return db.load(sql);
+}
 exports.addScore = (score) => {
 	const sql = `insert into Score(StudentId, SubjectId, ScoreType, ScoreValue, Semester, AcademicYear) values('${score.StudentId}', ${score.SubjectId}, ${score.ScoreType}, ${score.ScoreValue}, ${score.Semester}, ${score.AcademicYear});`;
     return db.load(sql);

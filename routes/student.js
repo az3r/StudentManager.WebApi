@@ -12,11 +12,6 @@ router.get('/', jwtt.tokenVerify,(req, res) =>{
 	// })
 	return res.sendStatus(200);
 })
-router.get('/class/:id', jwtt.tokenVerify,(req, res) =>{
-	studentRepo.loadStudentInClass(req.params.id).then(rows => {
-		return res.status(200).json(rows.recordset);
-	})
-})
 router.get('/single/:id', jwtt.tokenVerify,(req, res) =>{
 	studentRepo.singleStudent(req.params.id).then(rows => {
 		return res.status(200).json(rows.recordset[0]);
