@@ -1,9 +1,5 @@
 const db = require('../db/db');
 
-exports.addScore = (score) => {
-	const sql = `insert into Score(StudentId, SubjectId, Semester, AcademicYear, ScoreType, ScoreValue) values('${Score.StudentId}', '${Score.SubjectId}', '${Score.Semester}', '${Score.AcademicYear}', '${Score.ScoreType}', '${score.ScoreValue}');`;
-    return db.load(sql);
-}
 exports.updateScore = (score) => {
 	const sql = `update Score set ScoreValue = ${score.ScoreValue} where StudentId = '${score.StudentId}' and Semester = ${score.Semester} and AcademicYear = ${score.AcademicYear} and SubjectId = ${score.SubjectId} and ScoreType = ${score.ScoreType};`;
     return db.load(sql);
