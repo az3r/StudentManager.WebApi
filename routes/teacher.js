@@ -47,7 +47,7 @@ router.get('/class/:id', jwtt.tokenVerify,(req, res) =>{
 })
 
 router.get('/listscore/:id', jwtt.tokenVerify,(req, res) =>{
-	scoreRepo.listStudentAndScore(req.params.id, req.query.sem, req.query.year).then(rows => {
+	scoreRepo.listStudentAndScore(req.params.id, req.query.class, req.query.sem, req.query.year).then(rows => {
 		let i = 0, records = []
 		if(typeof rows.recordset === 'undefined' || !rows.recordset.length){
 			return res.status(403).json({
