@@ -9,6 +9,6 @@ exports.singleFb = (StudentId, Semester, AcademicYear) => {
 	return db.load(sql);
 }
 exports.addfeedback = (feedback) => {
-	const sql = `insert into Feedback(FeedbackId, StudentId, Conduct , Feedback, Semester, AcademicYear) values('${feedback.FeedbackId}', '${feedback.StudentId}', '${feedback.Conduct}', ${feedback.Feedback}, ${score.Semester}, ${score.AcademicYear});`;
+	const sql = `insert into Feedback(FeedbackId, StudentId, Conduct , Feedback, Semester, AcademicYear) values('${feedback.FeedbackId}', '${feedback.StudentId}', 'A', '${feedback.Feedback}', ${feedback.Semester}, ${feedback.AcademicYear});`;
     return db.load(sql);
 }

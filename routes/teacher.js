@@ -3,6 +3,7 @@ const router = express.Router();
 const studentRepo = require('../models/studentRepo');
 const scoreRepo = require('../models/scoreRepo');
 const teacherRepo = require('../models/teacherRepo');
+const feedbackRepo = require('../models/feedbackRepo');
 const jwtt = require('../auth/jsonwebtoken');
 
 
@@ -121,10 +122,10 @@ router.post('/updatescore', (req, res) => {
 	})
 });
 router.post('/addfeedback', (req, res) => {
-	const score = req.body;
-	score.FeedbackId = score.
-	scoreRepo.updateScore(score).then(result => {
-		scoreRepo.getScore(score).then(rows => {
+	const fb = req.body;
+	fb.FeedbackId = fb.AcademicYear.toString(10).substring(2, 4) + '0' + fb.Semester.toString(10)+fb.StudentId;
+	feedbackRepo.addfeedback(fb).then(result => {
+		feedbackRepo.singleFb(fb.StudentId, fb.Semester, fb.AcademicYear).then(rows => {
 			return res.status(200).json(rows.recordset);
 	    })
 	})
@@ -132,7 +133,16 @@ router.post('/addfeedback', (req, res) => {
 router.post('/addmultiscore', (req, res) => {
 	let score = req.body;
 	scoreRepo.addMultiScore(score).then(result=>{
-		return res.status(403).json({
+		return res.status(200).json({
+			success: 1,
+			message: "oke!"
+		});
+	})
+});
+router.post('/updatemultiscore', (req, res) => {
+	let score = req.body;
+	scoreRepo.updateMultiScore(score).then(result=>{
+		return res.status(200).json({
 			success: 1,
 			message: "oke!"
 		});

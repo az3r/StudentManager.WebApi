@@ -56,3 +56,23 @@ exports.addMultiScore = (score) => {
 	}
 	return db.load(sql);
 }
+exports.updateMultiScore = (score) => {
+	let i = 0, sql = ``;
+	for (i; i<score.length; i++)
+	{
+		sql = sql + `update Score set ScoreValue = ${score[i].Test15[0]} where StudentId = '${score[i].StudentId}' and SubjectId = ${score[i].SubjectId} and ScoreType = 1 and Semester = ${score[i].Semester} and AcademicYear =  ${score[i].AcademicYear};
+		`;
+		sql = sql + `update Score set ScoreValue = ${score[i].Test15[1]} where StudentId = '${score[i].StudentId}' and SubjectId = ${score[i].SubjectId} and ScoreType = 2 and Semester = ${score[i].Semester} and AcademicYear =  ${score[i].AcademicYear};
+		`;
+		sql = sql + `update Score set ScoreValue = ${score[i].Test15[2]} where StudentId = '${score[i].StudentId}' and SubjectId = ${score[i].SubjectId} and ScoreType = 3 and Semester = ${score[i].Semester} and AcademicYear =  ${score[i].AcademicYear};
+		`;
+		sql = sql + `update Score set ScoreValue = ${score[i].Test45[0]} where StudentId = '${score[i].StudentId}' and SubjectId = ${score[i].SubjectId} and ScoreType = 4 and Semester = ${score[i].Semester} and AcademicYear =  ${score[i].AcademicYear};
+		`;
+		sql = sql + `update Score set ScoreValue = ${score[i].Test45[1]} where StudentId = '${score[i].StudentId}' and SubjectId = ${score[i].SubjectId} and ScoreType = 5 and Semester = ${score[i].Semester} and AcademicYear =  ${score[i].AcademicYear};
+		`;
+		sql = sql + `update Score set ScoreValue = ${score[i].TestFinal} where StudentId = '${score[i].StudentId}' and SubjectId = ${score[i].SubjectId} and ScoreType = 6 and Semester = ${score[i].Semester} and AcademicYear =  ${score[i].AcademicYear};
+		`;		
+	}
+//	return console.log(sql);
+	return db.load(sql);
+}
