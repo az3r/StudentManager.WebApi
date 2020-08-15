@@ -106,4 +106,13 @@ router.post('/updatescore', (req, res) => {
 	    })
 	})
 });
+router.post('/addfeedback', (req, res) => {
+	const score = req.body;
+	score.FeedbackId = score.
+	scoreRepo.updateScore(score).then(result => {
+		scoreRepo.getScore(score).then(rows => {
+			return res.status(200).json(rows.recordset);
+	    })
+	})
+});
 module.exports = router;

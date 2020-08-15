@@ -60,7 +60,7 @@ router.get('/noti/:id', jwtt.tokenVerify,(req, res) =>{
 	})
 })
 router.get('/feedback/:id', jwtt.tokenVerify,(req, res) =>{
-	studentRepo.singleFb(req.params.id, req.query.sem, req.query.year).then(rows => {
+	feedbackRepo.singleFb(req.params.id, req.query.sem, req.query.year).then(rows => {
 		if(typeof rows.recordset === 'undefined' || !rows.recordset.length){
 			return res.status(403).json({
 				success: 0,

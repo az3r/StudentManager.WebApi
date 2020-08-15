@@ -16,20 +16,6 @@ exports.loadStudentInClass = (ClassId, year) => {
 	const sql=`select EnrolledClass.ClassId, EnrolledClass.AcademicYear, Student.StudentId, PersonalInfo.LastName, PersonalInfo.MiddleName, PersonalInfo.FirstName, PersonalInfo.IsMale, CONVERT(VARCHAR(10), PersonalInfo.Birthday) as Birthday from EnrolledClass join Student on EnrolledClass.StudentId = Student.StudentId join PersonalInfo on Student.StudentId = PersonalInfo.PersonalInfoId where EnrolledClass.ClassId = '${ClassId}' and EnrolledClass.AcademicYear = ${year};`
 	return db.load(sql);
 }
-exports.singleFb = (StudentId, Semester, AcademicYear) => {
-	let sql=null
-	if(Semester == null && AcademicYear == null)
-		sql = `select StudentId, Feedback, Conduct, Semester, AcademicYear from Feedback where Feedback.StudentId = '${StudentId}'`;
-	if(Semester == null && AcademicYear != null)
-		sql = `select StudentId, Feedback, Conduct, Semester, AcademicYear from Feedback where Feedback.StudentId = '${StudentId}' and Feedback.AcademicYear = ${AcademicYear}`;
-	if(Semester != null && AcademicYear != null)
-		sql = `select StudentId, Feedback, Conduct, Semester, AcademicYear from Feedback where Feedback.StudentId = '${StudentId}' and Feedback.AcademicYear = ${AcademicYear} and Feedback.Semester = ${Semester}`;
-	return db.load(sql);
-}
-exports.singleCondult = (StudentId) => {
-	const sql = `select * from Student as st join Feedback as fb on st.StudentId = fb.StudentId where st.StudentId = ${StudentId};`;
-	return db.load(sql)
-}
 exports.singleTimeTable = (StudentId, Semester, AcademicYear) => {
 	let sql = null
 	if(Semester == null && AcademicYear == null)
