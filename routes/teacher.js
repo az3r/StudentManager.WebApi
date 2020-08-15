@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const studentRepo = require('../models/studentRepo');
+const scoreRepo = require('../models/scoreRepo');
 const teacherRepo = require('../models/teacherRepo');
 const jwtt = require('../auth/jsonwebtoken');
 
@@ -39,7 +40,7 @@ router.get('/schedule/:id', jwtt.tokenVerify,(req, res) =>{
 
 
 router.get('/score/:id', jwtt.tokenVerify,(req, res) =>{
-	studentRepo.singleScore(req.params.id, req.query.sem, req.query.year).then(rows => {
+	scoreRepo.singleScore(req.params.id, req.query.sem, req.query.year).then(rows => {
 		let i = 0, records = []
 		if(typeof rows.recordset === 'undefined' || !rows.recordset.length){
 			return res.status(403).json({
@@ -100,7 +101,7 @@ router.post('/addScore', (req, res) =>{
 
 router.post('/addScore', (req, res) => {
 	const score = req.body;
-	studentRepo.addScore(score).then(result => {
+	scoreRepo.addScore(score).then(result => {
 		teacherRepo.singleScore(score).then(rows => {
 			return res.status(200).json(rows.recordset);
 	    })
@@ -109,5 +110,15 @@ router.post('/addScore', (req, res) => {
 	})	
 })
 
-
+router.post('/updateScore', (req, res) => {
+	const score = req.body;
+	// scoreRepo.updateScore(score).then(result => {
+	// 	teacherRepo.singleScore(score).then(rows => {
+	// 		return res.status(200).json(rows.recordset);
+	//     })
+	// })
+	scoreRepo.singleScore(score).then(rows => {
+			return res.status(200).json(rows.recordset);
+	    })
+});
 module.exports = router;

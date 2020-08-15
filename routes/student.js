@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const studentRepo = require('../models/studentRepo');
+const scoreRepo = require('../models/scoreRepo');
 const jwtt = require('../auth/jsonwebtoken');
 
 //GET
@@ -22,7 +23,7 @@ router.get('/single/:id', jwtt.tokenVerify,(req, res) =>{
 	})
 })
 router.get('/score/:id', jwtt.tokenVerify,(req, res) =>{
-	studentRepo.singleScore(req.params.id, req.query.sem, req.query.year).then(rows => {
+	scoreRepo.singleScore(req.params.id, req.query.sem, req.query.year).then(rows => {
 		let i = 0, records = []
 		if(typeof rows.recordset === 'undefined' || !rows.recordset.length){
 			return res.status(403).json({
