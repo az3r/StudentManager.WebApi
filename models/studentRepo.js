@@ -1,7 +1,7 @@
 const db = require('../db/db');
 
-exports.loadAll = () => {
-	const sql="select * from Student";
+exports.loadAllClass = () => {
+	const sql="select * from Class";
 	return db.load(sql);
 }
 exports.singleStudent = (StudentId) => {
@@ -9,7 +9,8 @@ exports.singleStudent = (StudentId) => {
 	return db.load(sql);
 }
 exports.add = student => {
-    var sql = `insert into Student(StudentId, FirstName, LastName) values('${student.StudentId}', '${student.FirstName}', '${student.LastName}');`;
+	let sql = `insert into PersonalInfo(PersonalInfoId, Address, LastName, MiddleName, FirstName, Email, PhoneNumber, IsMale, Birthday, PersonalType) values('${student.PersonalInfoId}', '${student.Address}', '${student.LastName}', '${student.MiddleName}', '${student.FirstName}', '${student.Email}','${student.PhoneNumber}','${student.IsMale}','${student.Birthday}', 2);`;
+    sql = sql + `insert into Student(StudentId, FirstName, LastName) values('${student.StudentId}', '${student.FirstName}', '${student.LastName}');`;
     return db.load(sql);
 }
 exports.loadStudentInClass = (ClassId, year) => {
@@ -24,9 +25,5 @@ exports.singleTimeTable = (StudentId, Semester, AcademicYear) => {
 		sql = `select Session.SessionId, CONVERT(VARCHAR(5),Session.BeginTime) as BeginTime, CONVERT(VARCHAR(5),Session.EndTime) as EndTime, Subject.SubjectName, ClassId, Room.RoomName, Semester, DayOfWeek from Schedule join Subject on Schedule.SubjectId = Subject.SubjectId join Room on Schedule.RoomId = Room.RoomId join Session on Schedule.SessionId = Session.SessionId where (select ClassId from Student join EnrolledClass on Student.StudentId = EnrolledClass.StudentId where Student.StudentId = ${StudentId} and AcademicYear = ${AcademicYear}) = Schedule.ClassId;`;
 	if(Semester != null && AcademicYear != null)
 		sql = `select Session.SessionId, CONVERT(VARCHAR(5),Session.BeginTime) as BeginTime, CONVERT(VARCHAR(5),Session.EndTime) as EndTime, Subject.SubjectName, ClassId, Room.RoomName, DayOfWeek from Schedule join Subject on Schedule.SubjectId = Subject.SubjectId join Room on Schedule.RoomId = Room.RoomId join Session on Schedule.SessionId = Session.SessionId where (select ClassId from Student join EnrolledClass on Student.StudentId = EnrolledClass.StudentId where Student.StudentId = ${StudentId} and AcademicYear = ${AcademicYear} and Semester = ${Semester}) = Schedule.ClassId;`;	
-	return db.load(sql)
-}
-exports.singleNoti = (StudentId) => {
-	const sql = `select * from ClassNotification where (select ClassId from Student join EnrolledClass on Student.StudentId = EnrolledClass.StudentId where Student.StudentId = ${StudentId}) = ClassNotification.ClassId;`;
 	return db.load(sql)
 }

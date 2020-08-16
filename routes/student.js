@@ -3,16 +3,10 @@ const router = express.Router();
 const studentRepo = require('../models/studentRepo');
 const scoreRepo = require('../models/scoreRepo');
 const feedbackRepo = require('../models/feedbackRepo');
+const notiRepo = require('../models/notiRepo');
 const jwtt = require('../auth/jsonwebtoken');
 
 //GET
-router.get('/', jwtt.tokenVerify,(req, res) =>{
- //  	studentRepo.loadAll().then(rows => {
-	// 	//console.log(rows.recordset[0].Ten);
-	// 	return res.status(200).json(rows.recordset);
-	// })
-	return res.sendStatus(200);
-})
 router.get('/single/:id', jwtt.tokenVerify,(req, res) =>{
 	studentRepo.singleStudent(req.params.id).then(rows => {
 		return res.status(200).json(rows.recordset[0]);
@@ -56,7 +50,7 @@ router.get('/schedule/:id', jwtt.tokenVerify,(req, res) =>{
 	})
 })
 router.get('/noti/:id', jwtt.tokenVerify,(req, res) =>{
-	studentRepo.singleNoti(req.params.id).then(rows => {
+	notiRepo.singleNoti(req.params.id).then(rows => {
 		//console.log(rows.recordset[0].Ten);
 		return res.status(200).json(rows.recordset);
 	})
@@ -83,7 +77,6 @@ router.post('/add', (req, res) =>{
 	const student = req.body;
 	studentRepo.add(student).then(result => {
 		studentRepo.singleStudent(student.StudentId).then(rows => {
-			// console.log(rows.recordset[0].Ten)
 			return res.status(200).json(rows.recordset);
 	    })
 	})
