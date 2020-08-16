@@ -3,6 +3,7 @@ const router = express.Router();
 const studentRepo = require('../models/studentRepo');
 const scoreRepo = require('../models/scoreRepo');
 const teacherRepo = require('../models/teacherRepo');
+const scheduleRepo = require('../models/scheduleRepo');
 const feedbackRepo = require('../models/feedbackRepo');
 const notiRepo = require('../models/notiRepo');
 const jwtt = require('../auth/jsonwebtoken');
@@ -76,16 +77,6 @@ router.get('/listsubject', jwtt.tokenVerify, (req, res) =>{
 		return res.status(200).json(sb);	
 	})
 })
-router.post('/addnoti', jwtt.tokenVerify, (req, res)=>{
-	const noti = req.body;
-	notiRepo.addNoti(noti).then(rows =>{
-		return res.sendStatus(200);
-	})
-	.catch(function(e) {
-		console.log(e);
-		return res.sendStatus(500);
-	})	
-});
 
 router.post('/addstudent', jwtt.tokenVerify, (req, res) =>{
 	const student = req.body;
@@ -158,13 +149,53 @@ router.post('/updatestudent', jwtt.tokenVerify, (req, res) =>{
 		console.log(e);
 		return res.sendStatus(500);
 	})	
-})
-router.post('/updatenoti', jwtt.tokenVerify, (req, res) =>{
+});
+router.post('/addnoti', jwtt.tokenVerify, (req, res)=>{
 	const noti = req.body;
+	notiRepo.addNoti(noti).then(rows =>{
+		return res.sendStatus(200);
+	})
+	.catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
+	})	
+});
+router.post('/updatenoti', jwtt.tokenVerify, (req, res) =>{
+	let noti = req.body;
 	if(typeof noti.NotificationId == 'string')
 		noti.NotificationId = parseInt(noti.NotificationId);
 	notiRepo.update(noti).then(rows =>{
 		return res.status(200).json(rows.recordset[0]);
 	})
-})
+});
+router.post('/addschedule', jwtt.tokenVerify, (req, res) =>{
+	let schedule = req.body;
+	scheduleRepo.getRoomId(schedule.ClassId).then(result =>{
+		if(result.recordset[0].RoomId != 'undefine'){
+			schedule.RoomId = result.recordset[0].RoomId;
+			scheduleRepo.add(schedule).then(rows =>{
+				return res.sendStatus(200);
+			})
+		}
+		else throw('please choose room')
+	}).catch(function(e) {
+		console.log(e);
+	})
+});
+router.post('/updateschedule', jwtt.tokenVerify, (req, res) =>{
+	let schedule = req.body;
+	scheduleRepo.getRoomId(schedule.ClassId).then(result =>{
+		if(result.recordset[0].RoomId != 'undefine'){
+			schedule.RoomId = result.recordset[0].RoomId;
+			scheduleRepo.update(schedule).then(rows =>{
+				scheduleRepo.singleSchedule(schedule).then(row =>{
+					return res.status(200).json(row.recordset[0]);	
+				})
+			})
+		}
+		else throw('please choose room')
+	}).catch(function(e) {
+		console.log(e);
+	})
+});
 module.exports = router;
