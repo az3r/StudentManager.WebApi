@@ -6,6 +6,7 @@ const teacherRepo = require('../models/teacherRepo');
 const feedbackRepo = require('../models/feedbackRepo');
 const notiRepo = require('../models/notiRepo');
 const jwtt = require('../auth/jsonwebtoken');
+const bcrypt = require('bcrypt-nodejs');
 
 router.get('/allclass', jwtt.tokenVerify,(req, res) =>{
 	studentRepo.loadAllClass().then(rows => {
@@ -17,6 +18,11 @@ router.get('/allclass', jwtt.tokenVerify,(req, res) =>{
 	})	
 });
 router.get('/allteacher', jwtt.tokenVerify, (req, res) =>{
+	teacherRepo.loadAll().then(rows=>{
+		return res.status(200).json(rows.recordset);
+	})
+});
+router.get('/allsubject', jwtt.tokenVerify, (req, res) =>{
 	teacherRepo.loadAll().then(rows=>{
 		return res.status(200).json(rows.recordset);
 	})
@@ -36,9 +42,33 @@ router.get('/allnoti', jwtt.tokenVerify,(req, res) =>{
 	})
 });
 router.get('/allsubject', jwtt.tokenVerify, (req, res) =>{
-	studentRepo.loadAllSubject().then(rows =>{
+	teacherRepo.loadAllSubject().then(rows =>{
 		return res.status(200).json(rows.recordset);
 	})
+})
+router.get('/listsubject', jwtt.tokenVerify, (req, res) =>{
+	var sb = [];
+	let i = 0;
+	while(i<9)
+	{
+		teacherRepo.listSubject(i+1).then(rows =>{
+			let a = { SubjectId: i+1, SubjectName: rows.recordset[0].SubjectName, Teachers:[] };
+			let j = 0;
+			for(j; j<rows.recordset.length; j++)
+			{
+				let teacher = {
+					TeacherId: rows.recordset[j].TeacherId,
+					LastName: rows.recordset[j].LastName,
+					MiddleName: rows.recordset[j].MiddleName,
+					FirstName: rows.recordset[j].FirstName
+				}
+				a.Teachers.push(teacher);
+			}
+			sb.push(a);
+			i++;
+		})
+	}
+	return res.status(200).json(sb);	
 })
 router.post('/addnoti', jwtt.tokenVerify, (req, res)=>{
 	const noti = req.body;
@@ -59,6 +89,7 @@ router.post('/addstudent', jwtt.tokenVerify, (req, res) =>{
 		student.IsMale = parseInt(student.IsGraduated);
 	studentRepo.max().then(resultMax => {
 		student.StudentId = (parseInt(resultMax.recordset[0].MAX) + 1).toString(10);
+		student.Password = bcrypt.hashSync(student.StudentId, null, null);
 		const d = new Date();
 		student.AcademicYear = d.getFullYear();
 		studentRepo.add(student).then(result => {
@@ -81,6 +112,7 @@ router.post('/addteacher', jwtt.tokenVerify, (req, res) =>{
 		teacher.TeacherId = (parseInt(resultMax.recordset[0].MAX) + 1).toString(10);
 		while(teacher.TeacherId.length < 7)
 			teacher.TeacherId = "0" + teacher.TeacherId;
+		teacher.Password = bcrypt.hashSync(teacher.TeacherId, null, null);
 		teacherRepo.add(teacher).then(result => {
 			teacherRepo.single(teacher.TeacherId).then(rows => {
 				return res.status(200).json(rows.recordset[0]);
