@@ -1,7 +1,9 @@
 const db = require('../db/db');
 
 exports.loadAllClass = () => {
-	const sql="select * from Class";
+	const sql=`select Class.ClassId, Class.ClassName, PersonalInfo.LastName, PersonalInfo.MiddleName, PersonalInfo.FirstName, e.SumStudent, e.AcademicYear from class left join homeroom on Class.ClassId = HomeRoom.ClassId
+				left join PersonalInfo on PersonalInfo.PersonalInfoId = HomeRoom.TeacherId left join
+				(select ClassId, AcademicYear, count(*) as SumStudent from EnrolledClass group by ClassId, AcademicYear) as e on e.ClassId = Class.ClassId`;
 	return db.load(sql);
 }
 exports.loadAllStudent = (year) => {
