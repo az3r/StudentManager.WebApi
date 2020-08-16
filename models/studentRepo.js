@@ -4,6 +4,12 @@ exports.loadAllClass = () => {
 	const sql="select * from Class";
 	return db.load(sql);
 }
+exports.loadAllStudent = (year) => {
+	const sql = `select Student.StudentId, IsGraduated, Address, LastName, MiddleName, FirstName, Email, PhoneNumber, IsMale, CONVERT(VARCHAR(10), PersonalInfo.Birthday) as Birthday, EnrolledClass.ClassId from Student join PersonalInfo on Student.StudentId = PersonalInfo.PersonalInfoId join EnrolledClass on Student.StudentId = EnrolledClass.StudentId;`;
+	if (year != null)
+		sql = sql + `where EnrolledClass = ${year}`;
+	return db.load(sql);
+}
 exports.singleStudent = (StudentId) => {
 	const sql=`select Student.StudentId, IsGraduated, Address, LastName, MiddleName, FirstName, Email, PhoneNumber, IsMale, CONVERT(VARCHAR(10), PersonalInfo.Birthday) as Birthday, EnrolledClass.ClassId from Student join PersonalInfo on Student.StudentId = PersonalInfo.PersonalInfoId join EnrolledClass on Student.StudentId = EnrolledClass.StudentId where Student.StudentId=${StudentId};`;
 	return db.load(sql);

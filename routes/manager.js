@@ -17,9 +17,18 @@ router.get('/allclass', jwtt.tokenVerify,(req, res) =>{
 	})	
 });
 
+router.get('/allstudent', jwtt.tokenVerify,(req, res) =>{
+	studentRepo.loadAllStudent(req.query.year).then(rows => {
+		return res.status(200).json(rows.recordset);
+	})
+	.catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
+	})	
+});
 router.get('/allsubject', jwtt.tokenVerify, (req, res) =>{
 	studentRepo.loadAllSubject().then(rows =>{
-		return res.status(200).json(rows.recordset[0]);
+		return res.status(200).json(rows.recordset);
 	})
 })
 router.post('/addnoti', jwtt.tokenVerify, (req, res)=>{
