@@ -9,9 +9,14 @@ exports.singleStudent = (StudentId) => {
 	return db.load(sql);
 }
 exports.add = student => {
-	let sql = `insert into PersonalInfo(PersonalInfoId, Address, LastName, MiddleName, FirstName, Email, PhoneNumber, IsMale, Birthday, PersonalType) values('${student.PersonalInfoId}', '${student.Address}', '${student.LastName}', '${student.MiddleName}', '${student.FirstName}', '${student.Email}','${student.PhoneNumber}','${student.IsMale}','${student.Birthday}', 2);`;
-    sql = sql + `insert into Student(StudentId, FirstName, LastName) values('${student.StudentId}', '${student.FirstName}', '${student.LastName}');`;
+	let sql = `insert into PersonalInfo(PersonalInfoId, Address, LastName, MiddleName, FirstName, Email, PhoneNumber, IsMale, Birthday, PersonTypeId) values('${student.StudentId}', '${student.Address}', '${student.LastName}', '${student.MiddleName}', '${student.FirstName}', '${student.Email}','${student.PhoneNumber}','${student.IsMale}','${student.Birthday}', 1);
+ 				insert into Student(StudentId, IsGraduated) values('${student.StudentId}', 1);
+ 				insert into EnrolledClass(StudentId, ClassId, AcademicYear) values('${student.StudentId}', '${student.ClassId}', ${student.AcademicYear})`;
     return db.load(sql);
+}
+exports.max = ()=>{
+	const sql = `SELECT MAX(StudentId) as MAX FROM Student`;
+	return db.load(sql);
 }
 exports.loadStudentInClass = (ClassId, year) => {
 	const sql=`select EnrolledClass.ClassId, EnrolledClass.AcademicYear, Student.StudentId, PersonalInfo.LastName, PersonalInfo.MiddleName, PersonalInfo.FirstName, PersonalInfo.IsMale, CONVERT(VARCHAR(10), PersonalInfo.Birthday) as Birthday from EnrolledClass join Student on EnrolledClass.StudentId = Student.StudentId join PersonalInfo on Student.StudentId = PersonalInfo.PersonalInfoId where EnrolledClass.ClassId = '${ClassId}' and EnrolledClass.AcademicYear = ${year};`

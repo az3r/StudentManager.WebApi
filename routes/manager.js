@@ -28,4 +28,17 @@ router.post('/addnoti', jwtt.tokenVerify, (req, res)=>{
 	})	
 });
 
+router.post('/addstudent', (req, res) =>{
+	const student = req.body;
+	studentRepo.max().then(resultMax => {
+		student.StudentId = (parseInt(resultMax.recordset[0].MAX) + 1).toString(10);
+		const d = new Date();
+		student.AcademicYear = d.getFullYear();
+		studentRepo.add(student).then(result => {
+			studentRepo.singleStudent(student.StudentId).then(rows => {
+				return res.status(200).json(rows.recordset);
+		    })
+		})
+	})
+})
 module.exports = router;

@@ -15,3 +15,13 @@ exports.single = (TeacherId) => {
 	const sql=`select Teacher.TeacherId, SchoolRole.RoleName, Subject.SubjectId, Subject.SubjectName, Address, LastName, MiddleName, FirstName, Email, PhoneNumber, IsMale, CONVERT(VARCHAR(10), PersonalInfo.Birthday) as Birthday from Teacher join PersonalInfo on Teacher.TeacherId = PersonalInfo.PersonalInfoId join SchoolRole on Teacher.RoleId = SchoolRole.RoleId join Subject on Teacher.SubjectId = Subject.SubjectId where Teacher.TeacherId=${TeacherId};`;
 	return db.load(sql);
 }
+exports.max = ()=>{
+	const sql = `SELECT MAX(TeacherId) as MAX FROM Teacher`;
+	return db.load(sql);
+}
+exports.add = teacher => {
+	let sql = `insert into PersonalInfo(PersonalInfoId, Address, LastName, MiddleName, FirstName, Email, PhoneNumber, IsMale, Birthday, PersonTypeId) values('${teacher.TeacherId}', '${teacher.Address}', '${teacher.LastName}', '${teacher.MiddleName}', '${teacher.FirstName}', '${teacher.Email}','${teacher.PhoneNumber}','${teacher.IsMale}','${teacher.Birthday}', 2);
+ 				insert into Teacher(TeacherId, ) values('${teacher.TeacherId}', 1);
+ 				`;
+    return db.load(sql);
+}

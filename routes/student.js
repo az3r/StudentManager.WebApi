@@ -68,18 +68,5 @@ router.get('/feedback/:id', jwtt.tokenVerify,(req, res) =>{
 })
 
 //POST
-router.post('/add', (req, res) =>{
- //  	const student = {
-	// 	StudentId:"1712913",
-	// 	FirstName: "Nguyen",
-	// 	LastName: "Vinh"
-	// };
-	const student = req.body;
-	studentRepo.add(student).then(result => {
-		studentRepo.singleStudent(student.StudentId).then(rows => {
-			return res.status(200).json(rows.recordset);
-	    })
-	})
-})
 
 module.exports = router;
