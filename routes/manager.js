@@ -16,6 +16,11 @@ router.get('/allclass', jwtt.tokenVerify,(req, res) =>{
 		return res.sendStatus(500);
 	})	
 });
+router.get('/allteacher', jwtt.tokenVerify, (req, res) =>{
+	teacherRepo.loadAll().then(rows=>{
+		return res.status(200).json(rows.recordset);
+	})
+});
 router.get('/allstudent', jwtt.tokenVerify,(req, res) =>{
 	studentRepo.loadAllStudent(req.query.year).then(rows => {
 		return res.status(200).json(rows.recordset);

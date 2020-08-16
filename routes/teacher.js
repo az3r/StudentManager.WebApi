@@ -13,7 +13,6 @@ router.get('/single/:id', jwtt.tokenVerify,(req, res) =>{
 		return res.status(200).json(rows.recordset[0]);
 	})
 })
-
 router.get('/listclass/:id', jwtt.tokenVerify,(req, res) =>{
 	teacherRepo.listClass(req.params.id, req.query.sem, req.query.year).then(rows => {
 		if(typeof rows.recordset === 'undefined' || !rows.recordset.length){
@@ -83,24 +82,6 @@ router.get('/listscore/:id', jwtt.tokenVerify,(req, res) =>{
 		}
 	})
 })
-
-// router.get('/noti/:id', jwtt.tokenVerify,(req, res) =>{
-// 	studentRepo.singleNoti(req.params.id).then(rows => {
-// 		//console.log(rows.recordset[0].Ten);
-// 		return res.status(200).json(rows.recordset);
-// 	})
-// })
-// router.get('/feedback/:id', jwtt.tokenVerify,(req, res) =>{
-// 	studentRepo.singleFb(req.params.id, req.query.sem, req.query.year).then(rows => {
-// 		if(typeof rows.recordset === 'undefined' || !rows.recordset.length){
-// 			return res.status(403).json({
-// 				success: 0,
-// 				message: "Unavailable feedback!"
-// 			});
-// 		}
-// 		return res.status(200).json(rows.recordset);
-// 	})
-// })
 
 //POST
 router.post('/addscore', (req, res) => {
