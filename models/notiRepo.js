@@ -6,6 +6,6 @@ exports.singleNoti = (StudentId) => {
 	return db.load(sql);
 }
 exports.addNoti = (noti) => {
-	const sql = `insert into ClassNotification(CreateOn, ClassId, Title, Content) values('${noti.CreateOn}','${ClassId}', '${Title}', '${Content}');`;
+	const sql = `insert into ClassNotification(CreatedOn, ClassId, Title, Content) values('${noti.CreatedOn}','${noti.ClassId}', '${noti.Title}', '${noti.Content}');`;
 	return db.load(sql);
 }
