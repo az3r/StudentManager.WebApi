@@ -9,7 +9,7 @@ exports.singleStudent = (StudentId) => {
 	return db.load(sql);
 }
 exports.add = student => {
-	let sql = `insert into PersonalInfo(PersonalInfoId, Address, LastName, MiddleName, FirstName, Email, PhoneNumber, IsMale, Birthday, PersonTypeId) values('${student.StudentId}', '${student.Address}', '${student.LastName}', '${student.MiddleName}', '${student.FirstName}', '${student.Email}','${student.PhoneNumber}','${student.IsMale}','${student.Birthday}', 1);
+	let sql = `insert into PersonalInfo(PersonalInfoId, Address, LastName, MiddleName, FirstName, Email, PhoneNumber, IsMale, Birthday, PersonTypeId) values('${student.StudentId}', '${student.Address}', '${student.LastName}', '${student.MiddleName}', '${student.FirstName}', '${student.Email}','${student.PhoneNumber}', ${student.IsMale},'${student.Birthday}', 1);
  				insert into Student(StudentId, IsGraduated) values('${student.StudentId}', 1);
  				insert into EnrolledClass(StudentId, ClassId, AcademicYear) values('${student.StudentId}', '${student.ClassId}', ${student.AcademicYear})`;
     return db.load(sql);
@@ -31,4 +31,8 @@ exports.singleTimeTable = (StudentId, Semester, AcademicYear) => {
 	if(Semester != null && AcademicYear != null)
 		sql = `select Session.SessionId, CONVERT(VARCHAR(5),Session.BeginTime) as BeginTime, CONVERT(VARCHAR(5),Session.EndTime) as EndTime, Subject.SubjectName, ClassId, Room.RoomName, DayOfWeek from Schedule join Subject on Schedule.SubjectId = Subject.SubjectId join Room on Schedule.RoomId = Room.RoomId join Session on Schedule.SessionId = Session.SessionId where (select ClassId from Student join EnrolledClass on Student.StudentId = EnrolledClass.StudentId where Student.StudentId = ${StudentId} and AcademicYear = ${AcademicYear} and Semester = ${Semester}) = Schedule.ClassId;`;	
 	return db.load(sql)
+}
+exports.loadAllSubject = () => {
+	const sql = `select * from Subject ORDER BY SubjectId`;
+	return db.load(sql);
 }
