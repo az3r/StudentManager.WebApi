@@ -11,8 +11,8 @@ exports.listClass = (TeacherId, sem, year) => {
 	where Schedule.TeacherId = '${TeacherId}' and Schedule.Semester = ${sem} and Schedule.AcademicYear = ${year}`;
 	return db.load(sql);
 }
-exports.listSubject = (SubjectId) => {
-	const sql= `select Teacher.TeacherId, PersonalInfo.LastName, PersonalInfo.MiddleName, PersonalInfo.FirstName, Subject.SubjectId, Subject.SubjectName from teacher join PersonalInfo on Teacher.TeacherId = PersonalInfo.PersonalInfoId join Subject on Teacher.SubjectId = Subject.SubjectId where Teacher.SubjectId = ${SubjectId}`;
+exports.listSubject = () => {
+	const sql= `select Teacher.TeacherId, PersonalInfo.LastName, PersonalInfo.MiddleName, PersonalInfo.FirstName, Subject.SubjectId, Subject.SubjectName from teacher join PersonalInfo on Teacher.TeacherId = PersonalInfo.PersonalInfoId join Subject on Teacher.SubjectId = Subject.SubjectId ORDER BY Subject.SubjectId`;
 	return db.load(sql);
 }
 exports.loadAllSubject = () => {

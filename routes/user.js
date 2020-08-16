@@ -27,7 +27,7 @@ router.post('/login', (req, res) =>{
 		jwt.sign({ PersonalInfoId: rows.recordset[0].PersonalInfoId }, 'shhhh', { expiresIn: '200s' },(err, token) => {
 			return res.status(200).json({
 				token: token,
-				account: rows.recordset[0]
+				PersonalInfo: rows.recordset[0]
 			})
 		});
 	})

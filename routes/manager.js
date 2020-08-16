@@ -48,13 +48,16 @@ router.get('/allsubject', jwtt.tokenVerify, (req, res) =>{
 })
 router.get('/listsubject', jwtt.tokenVerify, (req, res) =>{
 	var sb = [];
-	let i = 0;
-	while(i<9)
-	{
-		teacherRepo.listSubject(i+1).then(rows =>{
-			let a = { SubjectId: i+1, SubjectName: rows.recordset[0].SubjectName, Teachers:[] };
-			let j = 0;
-			for(j; j<rows.recordset.length; j++)
+	teacherRepo.listSubject().then(rows =>{
+		let j = 0;
+		for(let i=1;i<=9;i++)
+		{	
+			let a = {
+				SubjectId: i, 
+				SubjectName: rows.recordset[j].SubjectName,
+				Teachers:[]
+				};
+			for(j; rows.recordset[j].SubjectId == i; j++)
 			{
 				let teacher = {
 					TeacherId: rows.recordset[j].TeacherId,
@@ -63,12 +66,13 @@ router.get('/listsubject', jwtt.tokenVerify, (req, res) =>{
 					FirstName: rows.recordset[j].FirstName
 				}
 				a.Teachers.push(teacher);
+
+			console.log(a);
 			}
 			sb.push(a);
-			i++;
-		})
-	}
-	return res.status(200).json(sb);	
+		}
+		return res.status(200).json(sb);	
+	})
 })
 router.post('/addnoti', jwtt.tokenVerify, (req, res)=>{
 	const noti = req.body;
