@@ -57,17 +57,19 @@ router.get('/listsubject', jwtt.tokenVerify, (req, res) =>{
 				SubjectName: rows.recordset[j].SubjectName,
 				Teachers:[]
 				};
-			for(j; rows.recordset[j].SubjectId == i; j++)
+			for(j;  j< rows.recordset.length; j++)
 			{
-				let teacher = {
-					TeacherId: rows.recordset[j].TeacherId,
-					LastName: rows.recordset[j].LastName,
-					MiddleName: rows.recordset[j].MiddleName,
-					FirstName: rows.recordset[j].FirstName
+				if(rows.recordset[j].SubjectId == i)
+				{	
+					let teacher = {
+						TeacherId: rows.recordset[j].TeacherId,
+						LastName: rows.recordset[j].LastName,
+						MiddleName: rows.recordset[j].MiddleName,
+						FirstName: rows.recordset[j].FirstName
+					}
+					a.Teachers.push(teacher);
 				}
-				a.Teachers.push(teacher);
-
-			console.log(a);
+				else break;
 			}
 			sb.push(a);
 		}
