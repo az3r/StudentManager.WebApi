@@ -20,6 +20,12 @@ exports.add = student => {
  				insert into EnrolledClass(StudentId, ClassId, AcademicYear) values('${student.StudentId}', '${student.ClassId}', ${student.AcademicYear})`;
     return db.load(sql);
 }
+exports.update = student => {
+	let sql = ` update Student set IsGraduated = ${student.IsGraduated} where StudentId = '${student.StudentId}';
+				update PersonalInfo set Address = '${student.Address}', LastName = '${student.LastName}', MiddleName = '${student.MiddleName}', FirstName = '${student.FirstName}', Email = '${student.Email}', PhoneNumber = '${student.PhoneNumber}', IsMale = ${student.IsMale}, Birthday = '${student.Birthday}' where PersonalInfoId = '${student.StudentId}';
+ 				update EnrolledClass set ClassId = '${student.ClassId}' where StudentId = '${student.StudentId}'`;
+    return db.load(sql);
+}
 exports.max = ()=>{
 	const sql = `SELECT MAX(StudentId) as MAX FROM Student`;
 	return db.load(sql);

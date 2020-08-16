@@ -25,3 +25,8 @@ exports.add = teacher => {
  				`;
     return db.load(sql);
 }
+exports.update = teacher => {
+	let sql = ` update Teacher set SubjectId = ${teacher.SubjectId} where TeacherId = '${teacher.TeacherId}';
+				update PersonalInfo set Address = '${teacher.Address}', LastName = '${teacher.LastName}', MiddleName = '${teacher.MiddleName}', FirstName = '${teacher.FirstName}', Email = '${teacher.Email}', PhoneNumber = '${teacher.PhoneNumber}', IsMale = ${teacher.IsMale}, Birthday = '${teacher.Birthday}' where PersonalInfoId = '${teacher.TeacherId}';`;
+ 	return db.load(sql);
+}

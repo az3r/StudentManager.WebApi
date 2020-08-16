@@ -48,6 +48,10 @@ router.post('/addnoti', jwtt.tokenVerify, (req, res)=>{
 
 router.post('/addstudent', jwtt.tokenVerify, (req, res) =>{
 	const student = req.body;
+	if(typeof student.IsMale == 'string')
+		student.IsMale = parseInt(student.IsMale);
+	if(typeof student.IsGraduated == 'string')
+		student.IsMale = parseInt(student.IsGraduated);
 	studentRepo.max().then(resultMax => {
 		student.StudentId = (parseInt(resultMax.recordset[0].MAX) + 1).toString(10);
 		const d = new Date();
@@ -57,10 +61,17 @@ router.post('/addstudent', jwtt.tokenVerify, (req, res) =>{
 				return res.status(200).json(rows.recordset[0]);
 		    })
 		})
+	}).catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
 	})
 })
 router.post('/addteacher', jwtt.tokenVerify, (req, res) =>{
 	const teacher = req.body;
+	if(typeof teacher.IsMale == "string")
+		teacher.IsMale = parseInt(teacher.IsMale);
+	if(typeof teacher.SubjectId == "string")
+		teacher.SubjectId = parseInt(teacher.SubjectId);
 	teacherRepo.max().then(resultMax => {
 		teacher.TeacherId = (parseInt(resultMax.recordset[0].MAX) + 1).toString(10);
 		while(teacher.TeacherId.length < 7)
@@ -70,6 +81,47 @@ router.post('/addteacher', jwtt.tokenVerify, (req, res) =>{
 				return res.status(200).json(rows.recordset[0]);
 		    })
 		})
+	}).catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
+	})
+});
+router.post('/updateteacher', jwtt.tokenVerify, (req, res) =>{
+	const teacher = req.body;
+	if(typeof teacher.IsMale == "string")
+		teacher.IsMale = parseInt(teacher.IsMale);
+	if(typeof teacher.SubjectId == "string")
+		teacher.SubjectId = parseInt(teacher.SubjectId);
+	teacherRepo.update(teacher).then(result => {
+		teacherRepo.single(teacher.TeacherId).then(rows => {
+			return res.status(200).json(rows.recordset[0]);
+	    })
+	}).catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
+	})
+})
+router.post('/updatestudent', jwtt.tokenVerify, (req, res) =>{
+	const student = req.body;
+	if(typeof student.IsMale == 'string')
+		student.IsMale = parseInt(student.IsMale);
+	if(typeof student.IsGraduated == 'string')
+		student.IsMale = parseInt(student.IsGraduated);
+	studentRepo.update(student).then(result => {
+		studentRepo.singleStudent(student.StudentId).then(rows => {
+			return res.status(200).json(rows.recordset[0]);
+	    })
+	}).catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
+	})	
+})
+router.post('/updatenoti', jwtt.tokenVerify, (req, res) =>{
+	const noti = req.body;
+	if(typeof noti.NotificationId == 'string')
+		noti.NotificationId = parseInt(noti.NotificationId);
+	notiRepo.update(noti).then(rows =>{
+		return res.status(200).json(rows.recordset[0]);
 	})
 })
 module.exports = router;

@@ -13,3 +13,7 @@ exports.loadAllNoti = () =>{
 	const sql = `select * from ClassNotification;`;
 	return db.load(sql);
 }
+exports.update = (noti) =>{
+	const sql = `update ClassNotification set CreatedOn = '${noti.CreatedOn}', ClassId = '${noti.ClassId}',  Title = '${noti.Title}', Content = '${noti.Content}' OUTPUT inserted.NotificationId, inserted.CreatedOn, inserted.ClassId, inserted.Title, inserted.Content where NotificationId = ${noti.NotificationId}`;
+	return db.load(sql);
+}
