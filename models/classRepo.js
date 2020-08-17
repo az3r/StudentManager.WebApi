@@ -1,7 +1,7 @@
 const db = require('../db/db');
 //manager
 exports.loadAllClass = () => {
-	const sql=`select Class.ClassId, Class.ClassName,Room.RoomId, Room.RoomName, PersonalInfo.LastName, PersonalInfo.MiddleName, PersonalInfo.FirstName, e.SumStudent, e.AcademicYear from class left join homeroom on Class.ClassId = HomeRoom.ClassId
+	const sql=`select Class.ClassId, Class.ClassName,Room.RoomId, Room.RoomName,PersonalInfo.PersonalInfoId, PersonalInfo.LastName, PersonalInfo.MiddleName, PersonalInfo.FirstName, e.SumStudent, e.AcademicYear from class left join homeroom on Class.ClassId = HomeRoom.ClassId
 				left join PersonalInfo on PersonalInfo.PersonalInfoId = HomeRoom.TeacherId left join
 				(select ClassId, AcademicYear, count(*) as SumStudent from EnrolledClass group by ClassId, AcademicYear) as e on e.ClassId = Class.ClassId join Room on CLass.RoomId = Room.RoomId`;
 	return db.load(sql);
@@ -27,6 +27,11 @@ exports.listClass = (TeacherId, sem, year) => {
 }
 exports.singleClass = (ClassId) =>{
 	const sql = `select * from Class where ClassId = '${ClassId}'`;
+	return db.load(sql);
+}
+exports.listRoom = () =>{
+	const sql = `select Room.*, Class.ClassId from Room left join Class on Class.RoomId = Room.RoomId`;
+	return db.load(sql);	
 }
 exports.add = (cl) =>{
 	const sql = `insert into class(ClassId, ClassName, RoomId) values('${cl.ClassId}', '${cl.ClassId}', '${cl.RoomId}');`;

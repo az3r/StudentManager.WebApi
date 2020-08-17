@@ -100,7 +100,15 @@ router.get('/listschedule/:id', jwtt.tokenVerify, (req, res) =>{
 		return res.sendStatus(500);
 	})
 })
-
+router.get('/listroom', jwtt.tokenVerify, (req, res) =>{
+	classRepo.listRoom().then(rows =>{
+		return res.status(200).json(rows.recordset);
+	})
+	.catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
+	})
+})
 //	POST
 router.post('/addstudent', jwtt.tokenVerify, (req, res) =>{
 	const student = req.body;
