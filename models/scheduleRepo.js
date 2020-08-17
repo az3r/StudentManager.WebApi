@@ -17,8 +17,8 @@ exports.update = (sc) => {
 	return db.load(sql);
 }
 exports.getScheduleFromClassId = (ClassId, Semester, AcademicYear)=>{
-	let sql = `select * from Schedule where ClassId = '${ClassId}'`;
-	if(Semester != null) sql = sql + ` and Semester = ${Semester}`;
-	if(AcademicYear != null) sql = sql + ` and AcademicYear = ${AcademicYear}`;
+	let sql = `select Schedule.*, Subject.SubjectName from Schedule join Subject on Subject.SubjectId = Schedule.SubjectId where Schedule.ClassId = '${ClassId}'`;
+	if(Semester != null) sql = sql + ` and Schedule.Semester = ${Semester}`;
+	if(AcademicYear != null) sql = sql + ` and Schedule.AcademicYear = ${AcademicYear}`;
 	return db.load(sql);
 }
