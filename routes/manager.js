@@ -81,8 +81,18 @@ router.get('/listsubject', jwtt.tokenVerify, (req, res) =>{
 		return res.sendStatus(500);
 	})
 })
-router.get('/liststudent', jwtt.tokenVerify, (req, res) =>{
-	classRepo.listStudentInClass(req.query.class, req.query.year).then(rows =>{
+router.get('/liststudent/:id', jwtt.tokenVerify, (req, res) =>{
+	classRepo.listStudentInClass(req.params.id, req.query.year).then(rows =>{
+		return res.status(200).json(rows.recordset);
+	})
+	.catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
+	})
+})
+// from classid
+router.get('/listschedule/:id', jwtt.tokenVerify, (req, res) =>{
+	scheduleRepo.getScheduleFromClassId(req.params.id, req.query.sem, req.query.year).then(rows =>{
 		return res.status(200).json(rows.recordset);
 	})
 	.catch(function(e) {
