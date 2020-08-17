@@ -32,27 +32,26 @@ router.post('/login', (req, res) =>{
 		});
 	})
 	.catch(function(e) {
-  		console.log(e);
+  		return res.status(403).json({
+  			success: 0,
+			message: "Wrong password or user id!"
+  		})
   	});
 });
+router.post('/changepassword', jwtt.tokenVerify, (req, res) =>{
+	body = req.body;
+	return console.log(req.AuthData)
+	// userRepo.singleId(body.PersonalInfoId).then(rows =>{
+	// 	userRepo.changePassword(body).then(rows2 =>{
+	// 		return res.status(200).json(rows.recordset[0]);
+	// 	})
+	// })
+	// .catch(function(e) {
+ //  		return res.status(403).json({
+ //  			success: 0,
+	// 		message: "Wrong password!"
+ //  		})
+ //  	});
+});
 
-// Format token
-// Header should be: Authorization: Bearer <access_token>
-// VerifyToken
-function verifyToken(req, res, next)
-{
-	//get auth header value
-	const bearerHeader = req.headers['authorization'];
-	if(typeof bearerHeader !== 'undefined'){
-		//split Bearer <access_token> from space
-		const bearer = bearerHeader.split(' ');
-		// Get token from array
-		req.token = bearer[1];
-		next();
-	}
-	else{
-		// Forbidden
-		res.sendStatus(403);
-	}
-}
 module.exports = router;

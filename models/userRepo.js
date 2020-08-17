@@ -9,3 +9,8 @@ exports.singleId = (id) => {
 	const sql=`select PersonalInfo.*, Account.Password, Account.IsActivated from Account join PersonalInfo on Account.PersonalInfoId = PersonalInfo.PersonalInfoId where Account.PersonalInfoId = '${id}'`;
 	return db.load(sql);
 }
+
+exports.changePassword = (Id, Password) => {
+	const sql = ``
+	return db.load(sql);
+}
