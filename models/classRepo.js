@@ -34,7 +34,8 @@ exports.listRoom = () =>{
 	return db.load(sql);	
 }
 exports.add = (cl) =>{
-	const sql = `insert into class(ClassId, ClassName, RoomId) values('${cl.ClassId}', '${cl.ClassId}', '${cl.RoomId}');`;
+	const sql = `insert into class(ClassId, ClassName, RoomId) values('${cl.ClassId}', '${cl.ClassId}', '${cl.RoomId}');
+				insert into HomeRoom(ClassId, TeacherId, AcademicYear) values('${cl.ClassId}', '${cl.TeacherId}', ${cl.AcademicYear})`;
 	return db.load(sql);
 }
 exports.update = (cl) =>{
