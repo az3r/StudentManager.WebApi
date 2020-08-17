@@ -48,6 +48,11 @@ router.get('/allsubject', jwtt.tokenVerify, (req, res) =>{
 		return res.status(200).json(rows.recordset);
 	})
 })
+router.get('/allschedule', jwtt.tokenVerify, (req, res) =>{
+	scheduleRepo.loadAllSchedule(req.query.sem, req.query.year).then(rows=>{
+		return res.status(200).json(rows.recordset);
+	})
+})
 router.get('/listsubject', jwtt.tokenVerify, (req, res) =>{
 	var sb = [];
 	teacherRepo.listSubject().then(rows =>{

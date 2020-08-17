@@ -22,3 +22,9 @@ exports.getScheduleFromClassId = (ClassId, Semester, AcademicYear)=>{
 	if(AcademicYear != null) sql = sql + ` and Schedule.AcademicYear = ${AcademicYear}`;
 	return db.load(sql);
 }
+exports.loadAllSchedule = (Semester, AcademicYear)=>{
+	let sql = `select Schedule.*, Subject.SubjectName, PersonalInfo.LastName, PersonalInfo.MiddleName, PersonalInfo.FirstName from Schedule join Subject on Subject.SubjectId = Schedule.SubjectId join PersonalInfo on Schedule.TeacherId = PersonalInfo.PersonalInfoId where 1!=0`;
+	if(Semester != null) sql = sql + ` and Schedule.Semester = ${Semester}`;
+	if(AcademicYear != null) sql = sql + ` and Schedule.AcademicYear = ${AcademicYear}`;
+	return db.load(sql);
+}
