@@ -16,3 +16,6 @@ exports.update = (sc) => {
 	let sql = `update schedule set ClassId = '${sc.ClassId}', SubjectId = ${sc.SubjectId} where SessionId = ${sc.SessionId} and Semester = ${sc.Semester} and AcademicYear = ${sc.AcademicYear} and DayOfWeek = ${sc.DayOfWeek} and TeacherId = '${sc.TeacherId}';`
 	return db.load(sql);
 }
+exports.getScheduleFromClassId = (ClassId, Semester, AcademicYear)=>{
+	let sql = `select * from Schedule where ClassId = '${ClassId}' and Semester = ${Semester} and AcademicYear = ${AcademicYear}`;
+}

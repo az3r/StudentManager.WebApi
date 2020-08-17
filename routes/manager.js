@@ -81,7 +81,17 @@ router.get('/listsubject', jwtt.tokenVerify, (req, res) =>{
 		return res.sendStatus(500);
 	})
 })
+router.get('/liststudent', jwtt.tokenVerify, (req, res) =>{
+	classRepo.listStudentInClass(req.query.class, req.query.year).then(rows =>{
+		return res.status(200).json(rows.recordset);
+	})
+	.catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
+	})
+})
 
+//	POST
 router.post('/addstudent', jwtt.tokenVerify, (req, res) =>{
 	const student = req.body;
 	if(typeof student.IsMale == 'string')

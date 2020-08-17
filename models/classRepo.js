@@ -6,6 +6,16 @@ exports.loadAllClass = () => {
 				(select ClassId, AcademicYear, count(*) as SumStudent from EnrolledClass group by ClassId, AcademicYear) as e on e.ClassId = Class.ClassId join Room on CLass.RoomId = Room.RoomId`;
 	return db.load(sql);
 }
+exports.listStudentInClass = (ClassId, Year)=>{
+	let sql = `select PersonalInfo.*, EnrolledClass.AcademicYear from EnrolledClass left join Class on EnrolledClass.ClassId = Class.ClassId join Student on Student.StudentId = EnrolledClass.StudentId join PersonalInfo on PersonalInfo.PersonalInfoId = Student.StudentId `
+	if(ClassId != null)
+	{
+		sql = sql + ` where EnrolledClass.ClassId = '${ClassId}'`;
+		if(Year != null)
+			sql = sql + `and EnrolledClass.AcademicYear = ${Year}`;
+	}
+	return db.load(sql);	
+}
 //teacher
 exports.listClass = (TeacherId, sem, year) => {
 	let sql= `select distinct Schedule.ClassId, e.SumStudent, CONCAT(PersonalInfo.LastName, ' ', PersonalInfo.MiddleName, ' ' ,PersonalInfo.FirstName) as 'HomeroomTeacherName' from Schedule join (select EnrolledClass.ClassId, EnrolledClass.AcademicYear, count(*) as SumStudent from EnrolledClass join Student on EnrolledClass.StudentId = Student.StudentId group by EnrolledClass.ClassId, EnrolledClass.AcademicYear) as e on Schedule.ClassId = e.ClassId
