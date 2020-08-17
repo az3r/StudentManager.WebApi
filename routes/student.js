@@ -36,6 +36,9 @@ router.get('/score/:id', jwtt.tokenVerify,(req, res) =>{
 			}
 			return res.status(200).json(records);
 		}
+	}).catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
 	})
 })
 router.get('/schedule/:id', jwtt.tokenVerify,(req, res) =>{

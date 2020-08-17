@@ -4,14 +4,6 @@ exports.loadAll = () => {
 	const sql=`select Teacher.TeacherId, SchoolRole.RoleName, Subject.SubjectId, Subject.SubjectName, Address, LastName, MiddleName, FirstName, Email, PhoneNumber, IsMale, CONVERT(VARCHAR(10), PersonalInfo.Birthday) as Birthday from Teacher join PersonalInfo on Teacher.TeacherId = PersonalInfo.PersonalInfoId join SchoolRole on Teacher.RoleId = SchoolRole.RoleId join Subject on Teacher.SubjectId = Subject.SubjectId;`;
 	return db.load(sql);
 }
-exports.listClass = (TeacherId, sem, year) => {
-	let sql= `select distinct Schedule.ClassId, e.SumStudent, CONCAT(PersonalInfo.LastName, ' ', PersonalInfo.MiddleName, ' ' ,PersonalInfo.FirstName) as 'HomeroomTeacherName' from Schedule join (select EnrolledClass.ClassId, EnrolledClass.AcademicYear, count(*) as SumStudent from EnrolledClass join Student on EnrolledClass.StudentId = Student.StudentId group by EnrolledClass.ClassId, EnrolledClass.AcademicYear) as e on Schedule.ClassId = e.ClassId
-	join HomeRoom on HomeRoom.ClassId = Schedule.ClassId
-	join PersonalInfo on PersonalInfo.PersonalInfoId = HomeRoom.TeacherId `
-	if(TeacherId != null && sem != null && year != null)
-		sql = sql + `where Schedule.TeacherId = '${TeacherId}' and Schedule.Semester = ${sem} and Schedule.AcademicYear = ${year}`;
-	return db.load(sql);
-}
 exports.listSubject = () => {
 	const sql= `select Teacher.TeacherId, PersonalInfo.LastName, PersonalInfo.MiddleName, PersonalInfo.FirstName, Subject.SubjectId, Subject.SubjectName from teacher join PersonalInfo on Teacher.TeacherId = PersonalInfo.PersonalInfoId join Subject on Teacher.SubjectId = Subject.SubjectId ORDER BY Subject.SubjectId`;
 	return db.load(sql);

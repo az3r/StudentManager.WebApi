@@ -4,6 +4,7 @@ const studentRepo = require('../models/studentRepo');
 const scoreRepo = require('../models/scoreRepo');
 const teacherRepo = require('../models/teacherRepo');
 const feedbackRepo = require('../models/feedbackRepo');
+const classRepo = require('../models/classRepo');
 const jwtt = require('../auth/jsonwebtoken');
 
 
@@ -14,7 +15,7 @@ router.get('/single/:id', jwtt.tokenVerify,(req, res) =>{
 	})
 })
 router.get('/listclass/:id', jwtt.tokenVerify,(req, res) =>{
-	teacherRepo.listClass(req.params.id, req.query.sem, req.query.year).then(rows => {
+	classRepo.listClass(req.params.id, req.query.sem, req.query.year).then(rows => {
 		if(typeof rows.recordset === 'undefined' || !rows.recordset.length){
 			return res.status(403).json({
 				success: 0,
@@ -43,6 +44,9 @@ router.get('/schedule/:id', jwtt.tokenVerify,(req, res) =>{
 router.get('/class/:id', jwtt.tokenVerify,(req, res) =>{
 	studentRepo.loadStudentInClass(req.params.id, req.query.year).then(rows => {
 		return res.status(200).json(rows.recordset);
+	}).catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
 	})
 })
 
@@ -80,6 +84,9 @@ router.get('/listscore/:id', jwtt.tokenVerify,(req, res) =>{
 			}
 			return res.status(200).json(records);
 		}
+	}).catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
 	})
 })
 

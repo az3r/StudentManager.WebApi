@@ -1,7 +1,7 @@
 const db = require('../db/db');
 
 exports.getRoomId = (ClassId)=>{
-	let sql = `select RoomId from Room where RoomName = '${ClassId}'`;
+	let sql = `select Class.RoomId from Class join Room on Class.RoomId = Room.RoomId where Class.ClassId = '${ClassId}'`;
 	return db.load(sql);
 } 
 exports.singleSchedule = (sc) => {

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const studentRepo = require('../models/studentRepo');
 const scoreRepo = require('../models/scoreRepo');
+const classRepo = require('../models/classRepo');
 const teacherRepo = require('../models/teacherRepo');
 const scheduleRepo = require('../models/scheduleRepo');
 const feedbackRepo = require('../models/feedbackRepo');
@@ -10,7 +11,7 @@ const jwtt = require('../auth/jsonwebtoken');
 const bcrypt = require('bcrypt-nodejs');
 
 router.get('/allclass', jwtt.tokenVerify,(req, res) =>{
-	studentRepo.loadAllClass().then(rows => {
+	classRepo.loadAllClass().then(rows => {
 		return res.status(200).json(rows.recordset);
 	})
 	.catch(function(e) {
@@ -75,6 +76,9 @@ router.get('/listsubject', jwtt.tokenVerify, (req, res) =>{
 			sb.push(a);
 		}
 		return res.status(200).json(sb);	
+	}).catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
 	})
 })
 
@@ -180,6 +184,7 @@ router.post('/addschedule', jwtt.tokenVerify, (req, res) =>{
 		else throw('please choose room')
 	}).catch(function(e) {
 		console.log(e);
+		return res.sendStatus(500);
 	})
 });
 router.post('/updateschedule', jwtt.tokenVerify, (req, res) =>{
@@ -196,6 +201,17 @@ router.post('/updateschedule', jwtt.tokenVerify, (req, res) =>{
 		else throw('please choose room')
 	}).catch(function(e) {
 		console.log(e);
+		return res.sendStatus(500);
 	})
 });
+router.post('/addclass', jwtt.tokenVerify, (req, res) =>{
+	let cl = req.body;
+	classRepo.add(cl).then(rows =>{
+		return res.sendStatus(200);
+	}).catch(function(e) {
+		console.log(e);
+		return res.sendStatus(500);
+	})
+});
+
 module.exports = router;
