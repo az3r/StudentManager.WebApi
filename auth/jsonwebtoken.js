@@ -15,7 +15,7 @@ exports.tokenVerify = (req, res, next) => {
 					message: "Invalid Token"
 				});
 			}else{
-				// console.log(authData);
+				req.PersonalInfoId = authData.PersonalInfoId;
 				next();
 			}
 		});

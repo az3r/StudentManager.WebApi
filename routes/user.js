@@ -40,18 +40,20 @@ router.post('/login', (req, res) =>{
 });
 router.post('/changepassword', jwtt.tokenVerify, (req, res) =>{
 	body = req.body;
-	return console.log(req.AuthData)
-	// userRepo.singleId(body.PersonalInfoId).then(rows =>{
-	// 	userRepo.changePassword(body).then(rows2 =>{
-	// 		return res.status(200).json(rows.recordset[0]);
-	// 	})
-	// })
-	// .catch(function(e) {
- //  		return res.status(403).json({
- //  			success: 0,
-	// 		message: "Wrong password!"
- //  		})
- //  	});
+	body.PersonalInfoId = req.PersonalInfoId;
+	body.Password = bcrypt.hashSync(body.Password, null, null);
+	userRepo.singleId(body.PersonalInfoId).then(rows =>{
+		userRepo.changePassword(body).then(rows2 =>{
+			delete rows.recordset[0].Password;
+			return res.status(200).json(rows.recordset[0]);
+		})
+	})
+	.catch(function(e) {
+  		return res.status(403).json({
+  			success: 0,
+			message: "Wrong password!"
+  		})
+  	});
 });
 
 module.exports = router;
