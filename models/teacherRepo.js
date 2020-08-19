@@ -26,7 +26,7 @@ exports.max = ()=>{
 }
 exports.add = teacher => {
 	let sql = `insert into PersonalInfo(PersonalInfoId, Address, LastName, MiddleName, FirstName, Email, PhoneNumber, IsMale, Birthday, PersonTypeId) values('${teacher.TeacherId}', '${teacher.Address}', '${teacher.LastName}', '${teacher.MiddleName}', '${teacher.FirstName}', '${teacher.Email}','${teacher.PhoneNumber}', ${teacher.IsMale},'${teacher.Birthday}', 2);
- 				insert into Teacher(TeacherId, SubjectId, RoleId) values('${teacher.TeacherId}', ${teacher.SubjectId}, 5000000001);
+ 				insert into Teacher(TeacherId, SubjectId, RoleId) values('${teacher.TeacherId}', ${teacher.SubjectId}, '5000000001');
  				insert into Account(PersonalInfoId, Password) values('${teacher.TeacherId}', '${teacher.Password}')`;
     return db.load(sql);
 }
