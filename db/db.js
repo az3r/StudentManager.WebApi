@@ -3,11 +3,11 @@ var sqlDb = require("mssql");
 exports.load = function(sql) {
     return new Promise((resolve, reject) => {
         var conn = new sqlDb.ConnectionPool({
-            user: "sa",
-            password: "",
-            server: "localhost\\SQLEXPRESS",
-            database: "StudentManager.Database",
-            port: 1433
+            user: process.env.DB_USER,
+            password: process.env.DB_PASS,
+            server: "localhost\\"+process.env.SQLSERVER_NAME,
+            database: process.env.DB_NAME,
+            port: parseInt(process.env.DB_PORT)
         });
         conn.connect()
         .then(function() {
